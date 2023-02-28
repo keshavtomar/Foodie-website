@@ -1,7 +1,11 @@
+require('dotenv').config();
+
 const express = require('express');
 const Router = express.Router();
 const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.jwtSecret;
 
 var bcrypt = require('bcryptjs');
 
@@ -41,12 +45,26 @@ Router.post('/loginUser', async (req, res) => {
     let email = req.body.email;
     try {
         let userData = await User.findOne({ email });
-        if (!userData || userData.password !== req.body.password) {
+
+        // because of use of hash we cannot directly compare these passwords
+        let pswdMatch = await bcrypt.compare(req.body.password, userData.password);
+        //pswdMatch is 1 if the password matches else 0
+
+        if (!userData || !pswdMatch) {
+
             return res.status(400).json({ success: false, msg: "Email or Password don't match" });
         }
-        else {
-            return res.json({ success: true });
+
+        //creating jwt
+        const data = {
+            user: {
+                id: userData.id
+            }
         }
+
+        const authToken = jwt.sign(data, jwtSecret);  //data should be a object
+
+        return res.json({ success: true, authToken: authToken });
     } catch (error) {
         console.log(error);
         return res.json({ success: false });
