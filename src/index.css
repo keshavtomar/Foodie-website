@@ -32,6 +32,9 @@ body {
   background: #3b4465;
 }
 
+.card-img-top{
+  height: 200px;
+}
 
 
 .forms-section {
@@ -60,6 +63,7 @@ body {
 .form-wrapper.is-active {
   animation: showLayer .3s ease-in forwards;
 }
+
 
 @keyframes showLayer {
   50% {

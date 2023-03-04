@@ -10,8 +10,6 @@ const jwtSecret = process.env.jwtSecret;
 var bcrypt = require('bcryptjs');
 
 
-
-
 Router.post('/createuser',
     //body('Validation field','Message to send back if validation fails')
     body('email', 'Invalid Email').isEmail(),

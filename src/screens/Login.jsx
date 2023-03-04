@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { json, Link } from 'react-router-dom'
+import { json, Link, Navigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -33,11 +33,12 @@ export default function Login() {
         const json = await response.json();
         const userFound = json.success;
         if (userFound) {
+            localStorage.setItem("authToken", json.authToken);
             setloginCredentials({
                 email: "",
                 password: ""
             })
-            toast.success('Registered Successfully', {
+            toast.success('Logged in Successfully', {
                 position: "bottom-left",
                 autoClose: 2000,
                 hideProgressBar: false,
