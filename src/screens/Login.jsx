@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { json, Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Login() {
+    let navigate = useNavigate()
+
     const [loginCredentials, setloginCredentials] = useState({
         email: "",
         password: ""
@@ -34,22 +36,13 @@ export default function Login() {
         const userFound = json.success;
         if (userFound) {
             localStorage.setItem("authToken", json.authToken);
+            navigate("/");
+        }
+        else {
             setloginCredentials({
                 email: "",
                 password: ""
             })
-            toast.success('Logged in Successfully', {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }
-        else {
             toast.error('Invalid username or password!', {
                 position: "bottom-left",
                 autoClose: 2000,
