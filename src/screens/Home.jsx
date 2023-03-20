@@ -75,7 +75,7 @@ export default function Home() {
                                             .map(filteredItems => {
                                                 return (
                                                     <div className='col-sm-12 col-md-6 col-lg-4' style={{ textAlign: "center" }}>
-                                                        <Card key={filteredItems._id} src={filteredItems.img} name={filteredItems.name} priceOptions={filteredItems.options[0]} />
+                                                        <Card foodItem={filteredItems} priceOptions={filteredItems.options[0]} />
                                                     </div>
                                                 )
                                             }) : <div>No such data found</div>
