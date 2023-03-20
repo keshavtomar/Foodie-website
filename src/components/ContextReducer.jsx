@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer } from 'react'
-import { act } from 'react-dom/test-utils';
 
 const CartStateContext = createContext();
 const CartDispatchContext = createContext();
