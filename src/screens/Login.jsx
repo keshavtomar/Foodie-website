@@ -35,6 +35,7 @@ export default function Login() {
         const json = await response.json();
         const userFound = json.success;
         if (userFound) {
+            localStorage.setItem("userEmail", loginCredentials.email);
             localStorage.setItem("authToken", json.authToken);
             navigate("/");
         }

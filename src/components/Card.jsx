@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatchCart, useCart } from './ContextReducer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Card(props) {
+    const [dataExist, setdataExist] = useState(false);
+
     let dispatch = useDispatchCart();
 
     let options = props.priceOptions;
@@ -14,13 +19,40 @@ export default function Card(props) {
     const [qty, setqty] = useState('1')
     const [size, setsize] = useState("")
 
+    const handleAddtoCart = async () => {
+        if (!localStorage.getItem("authToken")) {
+            toast('Please Login to continue', {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+
+        let food = []
+        for (const item of data) {
+            if (item.id === props.foodItem._id) {
+                food = item;
+
+                break;
+            }
+        }
+
+        if (food !== [] && food.size === size) {
+            await dispatch({ type: "UPDATE", id: props.foodItem._id, price: finalPrice, qty: qty })
+            return;
+        }
+        await dispatch({ type: "ADD", id: props.foodItem._id, img: props.foodItem.img, name: props.foodItem.name, price: finalPrice, qty: qty, size: size });
+        setdataExist(true);
+    }
+
     //when add to cart button is pressed
     let finalPrice = qty * parseInt(options[size]);
-
-    const handleAddtoCart = async () => {
-        await dispatch({ type: "ADD", id: props.foodItem._id, img: props.img, name: props.foodItem.name, price: finalPrice, qty: qty, size: size });
-        await console.log(data);
-    }
 
 
     useEffect(() => {
@@ -29,6 +61,18 @@ export default function Card(props) {
 
     return (
         <div>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <div className="card m-3" style={{ "width": "18rem", "maxHeight": "360px" }}>
                 <img src={props.foodItem.img} className="card-img-top" alt="..." />
                 <div className="card-body">
@@ -50,7 +94,9 @@ export default function Card(props) {
                         </select>
                         <div className='d-inline h-100'>₹{finalPrice}/-</div>
                         <hr></hr>
-                        <button className={'btn btn-success justify-center ms-2'} onClick={handleAddtoCart}>Add to Cart</button>
+                        <button className={'btn btn-success justify-center ms-2'} onClick={handleAddtoCart}>
+                            {dataExist ? <span>Update</span> : <span>Add to Cart</span>}
+                        </button>
 
                     </div>
                 </div >
