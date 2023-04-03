@@ -21,7 +21,7 @@ export default function Login() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const response = await fetch("http://localhost:5000/api/loginUser", {
+        const response = await fetch("https://foodie-api-one.vercel.app/api/loginUser", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

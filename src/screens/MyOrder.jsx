@@ -7,7 +7,7 @@ export default function MyOrder() {
     const [orderData, setorderData] = useState({})
 
     const fetchMyOrder = async () => {
-        await fetch("http://localhost:5000/api/myOrders", {
+        await fetch("https://foodie-api-one.vercel.app/api/myOrders", {
             // credentials: 'include',
             // Origin:"http://localhost:3000/login",
             method: 'POST',

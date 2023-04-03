@@ -20,7 +20,7 @@ export default function Signup() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const response = await fetch("http://localhost:5000/api/createuser", {
+        const response = await fetch("https://foodie-api-one.vercel.app/api/createuser", {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
